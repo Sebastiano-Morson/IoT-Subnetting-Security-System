@@ -71,7 +71,8 @@ apt-get install -y python3-scipy python3-sklearn
 pip3 install NFStream
 pip3 install scikit-learn==1.0.2
 pip3 install joblib==1.2.0
-
+pip install termcolor
+pip install tabulate
 #configuro il Run-Time_Component come demone di sistema da avviare al boot
 touch /lib/systemd/system/ISSS_RunTimeComponent.service
 echo "[Unit]"								>>/lib/systemd/system/ISSS_RunTimeComponent.service

@@ -28,7 +28,7 @@ with open('/usr/local/ISSS/lock-unlock-list.csv') as csv_file:
     while True:
         csv_reader = csv.reader(csv_file, delimiter=',')
         for row in csv_reader:
-
+            
             #se una riga viene inserita all'interno del file:
             print('\tAction:',row[0],' -- MAC: ',row[1],', -- Author:',row[2],' -- Time: ',row[3],')')
             #verifico l'azione che si intende intraprendere. Può essere solo "LOCK" o "UNLOCK"
@@ -48,7 +48,7 @@ with open('/usr/local/ISSS/lock-unlock-list.csv') as csv_file:
                         rule = "sudo iptables -A INPUT -m mac --mac-source "+row[1]+" -j DROP"
                         os.system(rule)
                         ins_com = "insert into locked_devices values ('"+row[3]+"','"+row[1]+"','"+row[2]+"')"
-                        print(ins_com)
+                        #print(ins_com)
                         cur.execute(ins_com)
                         db.commit()
 
@@ -63,7 +63,7 @@ with open('/usr/local/ISSS/lock-unlock-list.csv') as csv_file:
                     os.system(rule)
                     #rimuovo la entry
                     del_com = "DELETE FROM locked_devices WHERE mac='"+row[1]+"'"
-                    print(del_com)
+                    #print(del_com)
                     cur.execute(del_com)
                     db.commit()
     

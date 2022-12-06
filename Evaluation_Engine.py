@@ -1,4 +1,5 @@
 from nfstream import NFStreamer
+from termcolor import colored
 import pandas
 import joblib
 import sqlite3
@@ -15,7 +16,7 @@ cur.execute("INSERT INTO settings VALUES ('delay',10)")
 cur.execute("INSERT INTO settings VALUES ('max_allerts', 2)")
 
 my_streamer = NFStreamer(
-                         source="/home/pi/pcap_scenario/mirai-httpflooding-2-dec.pcap", #or network interface
+                         source="/home/pi/pcap_scenario/mirai.pcap", #or network interface
                          #source="wlan0",
                          #decode_tunnels=True,
                          #bpf_filter=None,
@@ -38,8 +39,8 @@ my_streamer = NFStreamer(
       
 # load the model
 model = joblib.load("./random_forest.joblib")
-
-print("CATTURE:")
+print("")
+print("::::::::::::::::::::::::::::::::::::::::::::::::::::::CATTURE::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::")
 i=0
 for flow in my_streamer:
     data = {
@@ -101,9 +102,6 @@ for flow in my_streamer:
     value = data.values
     prediction = model.predict(value) 
     if prediction[0] == 1:
-        i+=1
-        print(i," ++++ ALLARME ++++")
-        
         # ricavo la data e il tempo
         dt = datetime.now()
         # ricavo il timestamp
@@ -114,20 +112,28 @@ for flow in my_streamer:
         dst_ip = flow.dst_ip 
         src_mac = flow.src_mac
         dst_mac = flow.dst_mac
-        counter_limit = cur.execute("select value from settings where option='delay'").fetchall() #numero massimo di segnalazioni prima del ban
+        counter_limit = cur.execute("select value from settings where option='max_allerts'").fetchall() #numero massimo di segnalazioni prima del ban
         counter_limit = counter_limit[0][0]
-        time_limit = cur.execute("select value from settings where option='max_allerts'").fetchall() #numero di secondi prima che due segnalazioni vengano viste come casi isolati
+        time_limit = cur.execute("select value from settings where option='delay'").fetchall() #numero di secondi prima che due segnalazioni vengano viste come casi isolati
         time_limit=time_limit[0][0]
+
         #EFFETTUO LE VERIFICHE PER IL DISPOSITIVO SORGENTE
         #verifico il timestamp e il counter associati al mac del dispositivo
         sel_com = "select timestamp,count, count(*) FROM allerts_table WHERE mac='"+src_mac+"'"
         result = cur.execute(sel_com).fetchall()
 
-        #print("RESULT[0][2]: ",result[0])
+        i+=1
+        print(colored("---------------------------------------------------------------------------------------------------------------------------------",'red'))
+        print(colored(str(str(i)+" ×××××                                          MALICIOUS FLOW                                                          ×××××"), 'red'))
+        print(colored(str("             src_ip: "+src_ip+" src_mac: "+ src_mac+" dst_ip: "+ dst_ip+" dst_mac: "+dst_mac+ "      " ), 'red'))
+        #print("---------------------------------------------------------------------------------------------------------------------------------")
+        #print(i," ×××××                                           MALICIOUS FLOW                                                         ×××××")
+        #print("         src_ip:",src_ip," --  src_mac:", src_mac," --  dst_ip:", dst_ip," --  dst_mac:",dst_mac, "       " )
+
         #se non è presente nessuna entry associata a quell'indirizzo mac-ip aggiungo la nuova entry
         if (result[0][2] == 0):
             ins_com = "insert into allerts_table values ('"+str(dt)+"','"+src_ip+"','"+src_mac+"',"+str(1)+")"
-            print("sorgente: ",ins_com)
+            #print("sorgente: ",ins_com)
             cur.execute(ins_com)
             db.commit()
         
@@ -172,13 +178,15 @@ for flow in my_streamer:
         #se non è presente nessuna entry associata a quell'indirizzo mac-ip aggiungo la nuova entry
         if (result[0][2] == 0):
             ins_com = "insert into allerts_table values ('"+str(dt)+"','"+dst_ip+"','"+dst_mac+"',"+str(1)+")"
-            print("destination: ",ins_com)
+            #print("destination: ",ins_com)
             cur.execute(ins_com)
             db.commit()
         
         #altrimenti, se è presente
         else:
             for row in result:
+                if len(row)!=4:
+                    continue
                 last_change = datetime.timestamp(datetime.strptime(row[0], "%Y-%m-%d %H:%M:%S.%f"))
                 count = row[1]
                 if (ts - last_change < time_limit ): #aspetto 3 min tra una segnalazione e un'altra
@@ -213,7 +221,8 @@ for flow in my_streamer:
 
     else:
         i+=1
-        print(i," **** NORMAL FLOW ****")
+        print("---------------------------------------------------------------------------------------------------------------------------------")
+        print(i," +++++                                            NORMAL FLOW                                                           +++++")
 #safely close the db connection
 db.close()
 print("*******")
