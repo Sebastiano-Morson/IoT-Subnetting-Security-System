@@ -11,8 +11,11 @@ Lo strumento è configurabile sulle schede Raspberry Pi 3b+ e 4.
 Lo strumento necessita la presenza di Python versioni >3.9.2.
 
 ## Installazione
-Per poter installare lo strumento è sufficiente eseguire il comando sudo ./Initializer_Component.sh. La fase di installazione può durare diversi minuti e prevede l'installazione di tutte le dipendenze necessarie al corretto funzionamento dello strumento.
-Una volta installato correttamente lo strumento verrà riavviato e ad ogni avvio successivo si renderà disponibile l'accesso all'access-point con nome ISSS_SecuredAccessPoint.
+Per poter installare lo strumento è necessario innanzitutto scaricare lo strumento tramite il comando
+sudo git clone https://github.com/Sebastiano-Morson/IoT-Subnetting-Security-System.git
+Successivamente accedere alla cartella appena creata.
+Una volta all'interno del folder ./ISSS è sufficiente eseguire il comando sudo ./Initializer_Component.sh. La fase di installazione può durare diversi minuti duranti i quali saranno chieste alcune informazioni come SSID name, password e ip associati alla sottorete. Prevede inoltre l'installazione di tutte le dipendenze necessarie al corretto funzionamento dello strumento e listate all'interno dei file pip_requirements.txt e requirements.txt .
+Una volta installato correttamente lo strumento eseguirà il reboot e ad ogni avvio successivo si renderà disponibile l'accesso all'access-point con nome ISSS_SecuredAccessPoint.
 ## Configurazione
 Una volta installato lo strumento si può procedere alla modifica dei parametri imposti di default.
 Per modificare il nome dell'SSID e la password della rete è sufficiente accedere al file di configurazione /etc/hostapd/hostapd.conf e modificare le righe 3 e 10.
