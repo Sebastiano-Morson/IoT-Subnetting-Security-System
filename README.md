@@ -75,6 +75,22 @@ Lo script Ban_Notifier_Engine.py mette a disposizione diverse opzioni per contro
 | --grant-device GRANT_DEVICE | permette di autorizzare un dispositivo |
 | --remove-grant REMOVE_GRANT | permette di rimuovere l'autorizzazione a un dispositivo |
 
-## Descrizione delle opzioni
 
+## Descrizione delle opzioni
+## Note
+Se si vuole verificare che lo strumento funzioni correttamente è possibile testare singolarmente i diversi moduli.
+
+Innanzitutto è bene fermare il servizio ISSS_RunTimeComponent.service.
+```
+sudo systemctl stop ISSS_RunTimeComponent.service
+```
+Dopodichè è necessario aprire 3 shell e per ciascuna spostarsi nella cartella di installazione (di default /usr/local/ISSS/ ).
+
+Nella prima shell eseguire il file Evaluation_Engine.py.
+
+Nella seconda shell eseguire il file Isulator_Engine.py
+
+Nella terza shell eseguire il file Ban_Notifier_Engine.py con passando gli argomenti desiderati.
+
+Se lo strumento funziona correttamente si dovrebbe ottenere una situazione come quella mostrata nella gif.
 ![](https://github.com/Sebastiano-Morson/IoT-Subnetting-Security-System/blob/main/readme_folder/ezgif.com-gif-maker.gif)
