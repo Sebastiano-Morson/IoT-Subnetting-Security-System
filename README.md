@@ -21,7 +21,7 @@ Per installare lo strumento è necessario:
 ```
 
 2. Accedere alla cartella ISSS
-3. seguire il comando 
+3. Eseguire il comando per installare il tool
 
 ```
 sudo ./Initializer_Component.sh
@@ -46,17 +46,17 @@ Attraverso il Ban_Notifier_Engine è possibile visualizzare lo stato corrente de
 Lo script Ban_Notifier_Engine.py mette a disposizione diverse opzioni per controllare e modificare il funzionamento dello strumento.
 | Option | Description |
 | :---: | :---: |
-| -l, --list | |
-| -s, --show-logs | |
-| -a, --show-allerts ||
-| --show-granted-devices ||
-| -d ALLERTS_DELAY, --allerts-delay ALLERTS_DELAY ||
-| -m MAX_ALLERTS, --max-allerts MAX_ALLERTS ||
-| -o, --show-options ||
-| --lock-device LOCK_DEVICE ||
-| --unlock-device UNLOCK_DEVICE ||
-| --grant-device GRANT_DEVICE ||
-| --remove-grant REMOVE_GRANT ||
+| -l, --list | mostra la lista dei dispositivi posti in isolamento |
+| -s, --show-logs | mostra la lista delle operazioni di locking e unlocking |
+| -a, --show-allerts | mostra la lista dei dispositivi che sono stati rilevati sospetti dall'Evaluation Engine |
+| --show-granted-devices | mostra la lista dei dispositivi autorizzati e che non verranno sottoposti a misure di isolamento |
+| -d ALLERTS_DELAY, --allerts-delay ALLERTS_DELAY | permette di modificare l'intervallo di tempo in cui due o più valutazioni negative sono ritenute legate tra loro |
+| -m MAX_ALLERTS, --max-allerts MAX_ALLERTS | permette di modificare il numero di allerts necessari a bannare la connessione |
+| -o, --show-options | mostra le attuali impostazioni utilizzate dall'Evaluation Engine |
+| --lock-device LOCK_DEVICE | permette di bloccare un dispositivo |
+| --unlock-device UNLOCK_DEVICE | permette di sbloccare un dispositivo |
+| --grant-device GRANT_DEVICE | permette di autorizzare un dispositivo |
+| --remove-grant REMOVE_GRANT | permette di rimuovere l'autorizzazione a un dispositivo |
 
 ## Descrizione delle opzioni
 
