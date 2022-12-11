@@ -30,9 +30,26 @@ sudo ./Initializer_Component.sh
 La fase di installazione può durare diversi minuti duranti i quali saranno chieste alcune informazioni come SSID name, password e ip associati alla sottorete. Prevede inoltre l'installazione di tutte le dipendenze necessarie al corretto funzionamento dello strumento e listate all'interno dei file pip_requirements.txt e requirements.txt .
 Una volta installato, lo strumento eseguirà il reboot. Se tutto è proseguito correttamente sarà visibile il nuovo AP con ssid stabilito durante la fase di installazione. Sarà inoltre presente un nuovo servizio che verrà automaticamente eseguito ad ogni boot del dispositivo.
 
+Di default durante l'installazione i file sono copiati nella cartella /usr/local/. È possibile modificare la cartella di installazione accedendo al file Initializer_Component.sh e modificando la stringa 
+```
+cp -r ../ISSS/ /usr/local/ISSS/ 
+```
+
+
 ## Configurazione
-Per modificare la configurazione dello strumento è possibile sfruttare lo strumento .
+
+### Configurazione di rete
 Per modificare il nome dell'SSID e la password della rete è sufficiente accedere al file di configurazione /etc/hostapd/hostapd.conf e modificare le righe 3 e 10.
+
+### Configurazione dei parametri di cattura
+L'Evaluation_Engine utilizza la libreria NFStream per catturare i pacchetti circolanti sulla rete. Per modificare i parametri di cattura è quindi necessario fare riferimento alla documentazione del tool NFStream.
+
+### Configurazione del modello di machine learning 
+Per modificare l'algoritmo di machine learning utilizzato è necessario ricercare all'interno dello script Evaluation_Engine.py la stringa 
+```
+model = joblib.load("./random_forest.joblib")
+```
+sostituendo il percorso "./random_forest.joblib" con il path in cui è presente il nuovo modello.
 
 ## Ban_Notifier_Engine
 Il Ban_Notifier_Engine rappresenta l'interfaccia tra utente e l'ISSS ed è richiamabile attraverso il comando
